@@ -1,0 +1,39 @@
+specVersion: 1.0.0
+description: "This project can be use as a starting point for developing your new NEAR SubQuery project"
+repository: "https://github.com/subquery/near-subql-starter"
+schema:
+  file: ./schema.graphql
+
+name: near-migration-example
+version: 0.0.1
+runner:
+  node:
+    name: "@subql/node-near"
+    version: "*"
+  query:
+    name: "@subql/query"
+    version: "*"
+
+
+network:
+  chainId: mainnet
+  # This endpoint must be a public non-pruned archive node
+  # We recommend providing more than one endpoint for improved reliability, performance, and uptime
+  # Public nodes may be rate limited, which can affect indexing speed
+  # When developing your project we suggest getting a private API key from a commercial provider
+  endpoint: ["https://archival-rpc.mainnet.near.org"]
+  # Optionally provide the HTTP endpoint of a full chain dictionary to speed up processing
+  dictionary: "https://api.subquery.network/sq/subquery/near-dictionary"
+  bypassBlocks: [81003306] # This is a missing block from the NEAR mainnet chain that we are skipping
+
+dataSources:
+  - kind: near/Runtime
+    startBlock: 98360855
+    mapping:
+      file: "./dist/index.js"
+      handlers:
+        - handler: handleBlock
+          kind: near/BlockHandler
+          filter:
+            modulo: 10
+            type: Transfer

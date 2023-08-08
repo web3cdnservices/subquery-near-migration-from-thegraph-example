@@ -1,23 +1,30 @@
 {
-  "name": "example-near-blocks",
+  "name": "example-near-blocks-porting-to-subquery",
   "version": "0.1.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/graphprotocol/graph-tooling",
-    "directory": "examples/near-blocks"
-  },
+  "repository": "https://github.com/web3cdnservices/subquery-near-migration-from-thegraph-example",
+  "files": [
+    "dist",
+    "schema.graphql",
+    "project.yaml"
+  ],
+  "author": "Web3cdn | SubQuery ",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "graph build",
-    "codegen": "graph codegen",
-    "create": "graph create example --node https://api.thegraph.com/deploy/",
-    "create-local": "graph create example --node http://127.0.0.1:8020",
-    "deploy": "graph deploy example --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/",
-    "deploy-local": "graph deploy example --ipfs http://localhost:5001 --node http://127.0.0.1:8020"
+    "build": "subql build",
+    "codegen": "subql codegen",
+    "start:docker": "docker-compose pull && docker-compose up --remove-orphans",
+    "dev": "subql codegen && subql build &&  docker-compose up --remove-orphans",
+    "prepack": "rm -rf dist && npm run build",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@subql/common": "latest",
+    "@subql/types-near": "latest",
+    "assert": "^2.0.0"
   },
   "devDependencies": {
-    "@graphprotocol/graph-cli": "0.54.0",
-    "@graphprotocol/graph-ts": "0.31.0"
+    "@subql/cli": "latest",
+    "typescript": "4.5.5"
   }
 }
